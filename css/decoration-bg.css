@@ -1,0 +1,82 @@
+/* 1. 基础背景容器设置 (固定定位，铺满全屏，置于底层) */
+.maiDecorationBg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -100;
+  /* 彩虹渐变背景 */
+  background: linear-gradient(180deg, #55e5fd, #bf9cff 12%, #ff97ef 23%, #fc9ccc 37%, #ffbcd7 50%, #fc9ccc 62%, #ff97ef 74%, #bf9cff 87%, #55e5fd);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 内部背景层 (带圆角和径向渐变) */
+.maiDecorationBg .background-layer {
+  position: relative;
+  top: 50%; left: 50%;
+  width: calc(100% - 48px); height: calc(100% - 48px);
+  transform: translate3d(-50%, -50%, 0);
+  border-radius: 40px;
+  clip-path: inset(0 round 40px);
+  background-image: radial-gradient(circle, #ffbcd7 27%, #fc9ccc 35%, #ff97ef 56%, #bf9cff 77%, #55e5fd 98%);
+  z-index: -99;
+}
+
+/* 背景纹理图案 (无限缓慢旋转) */
+.maiDecorationBg .background-layer:before {
+  content: "";
+  position: fixed;
+  top: 50%; left: 50%;
+  translate: -50% -50%;
+  width: 100%; aspect-ratio: 1;
+  background-image: url(../assets/maiDecorationBg/bg_pattern.png); /* 需替换为您自己的纹理图片 */
+  background-position: 50%;
+  background-size: contain;
+  mix-blend-mode: overlay;
+  animation: rotate 500s linear infinite;
+  z-index: -99;
+}
+
+/* 2. 通用元素定位 (绝对定位) */
+.corner, .tile, .star, .circle, .threeDemention {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+/* 旋转容器 */
+.rotation-wrapper {
+  position: relative;
+  width: 100%; height: 100%;
+  animation: rotate 70s linear infinite;
+}
+
+/* 3. 核心动画定义 (Keyframes) */
+/* 顺时针旋转 */
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(1turn); }
+}
+
+/* 逆时针旋转 */
+@keyframes rotateReverse {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-1turn); }
+}
+
+/* 浮现并上升消失 (用于星星、方块等浮动元素) */
+@keyframes riseAndFade {
+  0% { transform: translateY(150%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-150%); opacity: 0; }
+}
+
+/* 4. 元素动画应用示例 */
+.tile.tile-green { animation: riseAndFade 12s linear infinite; }
+.tile.tile-purple-left { animation: riseAndFade 15s linear infinite 3s; }
+.star.star-pink-left { animation: riseAndFade 6s linear infinite 4s; }
+.circle.circle-colorful { animation: rotateReverse 100s cubic-bezier(.01,.99,.28,.99) infinite; }
+.circle.circle-white { animation: rotateReverse 110s linear infinite; }
+.threeDemention.threeDemention-cube-small { animation: rotate 18s linear infinite; }
+.threeDemention.threeDemention-star { animation: rotateReverse 22s linear infinite; }
